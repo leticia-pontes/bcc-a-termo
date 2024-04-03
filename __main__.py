@@ -1,5 +1,13 @@
+from random import choice
 from termo import Termo, Feedback, Result, InvalidAttempt
+# pip install --user termcolor
 from termcolor import colored
+
+# pip install --user coverage
+# pip install unidecode
+# coverage run -m unittest
+# coverage report
+# coverage html
 
 
 def to_output(result: Result):
@@ -14,10 +22,15 @@ def to_output(result: Result):
 
 
 def main():
-    word = 'teste'
+    with open('palavras.txt') as input_stream:
+        words = list(filter(
+            lambda it: len(it) == 5,
+            map(str.strip, input_stream.readlines())
+        ))
+    word = choice(words)
     limit = 5
     counter = 0
-    termo = Termo(word)
+    termo = Termo(word, words)
     result = Result(win=False, feedback=None)
     print('Tente adivinhar a palavra')
     while not result.win and counter < limit:
@@ -31,6 +44,7 @@ def main():
     if result.win:
         print('Parabéns')
     else:
+        print(word)
         print('Game over')
 
 
